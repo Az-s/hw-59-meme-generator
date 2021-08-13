@@ -1,0 +1,15 @@
+.Btn {
+    margin-top: 20px !important;
+}
+
+.MemeCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.img {
+    box-shadow: 0px 0px 10px black;
+}

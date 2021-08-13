@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Icon, Image, Grid , Header} from 'semantic-ui-react';
+import { Icon, Image, Header, Button } from 'semantic-ui-react';
+import './MemeGenerator.css';
 
 const MemeGenerator = () => {
 
-    const [meme , setMeme] = useState([]);
-    
+    const [memes, setMemes] = useState([]);
+    const [memeIndex , setMemeIndex] = useState(1);
+
+    useEffect(() => {
+        fetch('https://api.imgflip.com/get_memes').then(res => {
+            res.json().then(res => {
+                const memes = res.data.memes;
+                setMemes(memes);
+            });
+        });
+    }, [])
+
     return (
-        <>
-        <Header as='h2'>Meme Generator</Header>
-            <Grid centered columns={2}>
-                <Card>
-                    <Image src='/images/avatar/large/daniel.jpg' wrapped ui={false} />
-                    <Card.Content>
-                        <Card.Header>Daniel</Card.Header>
-                        <Card.Meta>Joined in 2016</Card.Meta>
-                        <Card.Description>
-                            Daniel is a comedian living in Nashville.
-                        </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra>
-                        <a>
-                            <Icon name='user' />
-                            10 Friends
-                        </a>
-                    </Card.Content>
-                </Card>
-            </Grid>
-        </>
+        memes.length ?
+        <> 
+            <div className="MemeCard">
+                <Header as='h2'>Meme Generator</Header>
+                <Image src={memes[memeIndex].url} size='medium' centered rounded className='img'/>
+                <Button animated className='Btn' onClick={() => setMemeIndex(memeIndex + 1)}>
+                    <Button.Content visible>Next</Button.Content>
+                    <Button.Content hidden>
+                        <Icon name='arrow right' />
+                    </Button.Content>
+                </Button>
+                <Button animated className='Btn' onClick={() => setMemeIndex(memeIndex - 1)}>
+                    <Button.Content visible>Previous</Button.Content>
+                    <Button.Content hidden>
+                        <Icon name='arrow left' />
+                    </Button.Content>
+                </Button>
+            </div>
+        </> : null
     )
 }
 
